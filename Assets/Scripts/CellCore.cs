@@ -5,19 +5,12 @@ using UnityEngine;
 [System.Serializable]
 public class CellCore {
     public Vector2 pos { get; private set; } // position of the chunk
-    public BiomeGroup biomeGroup { get; private set; }
-    public Biome biome { get; private set; }
     [System.NonSerialized]
     public CellCore[] neighbors; // the cellCores with witch boundaries are shared
     [System.NonSerialized]
     public Node[] children;  // the nodes that define the boundaries of the cell
     [System.NonSerialized]
     public Edge[] edges; // the edges that delimit this cellcore ( warning : they have no perticular order )
-    // the next 3 variables are used as indexes in the MetaData array
-    // ex : MetaData.cores[a, b, c].id = this.id
-    public int a { get; private set; }
-    public int b { get; private set; }
-    public int c { get; private set; }
     public int id { get; private set; } // the id is unique for each CellCore and allows easy == operator
     private static int totalCellCount = 0; // this is the static int that is used for the id
 
@@ -28,48 +21,16 @@ public class CellCore {
     /// <param name="a"></param>
     /// <param name="b"></param>
     /// <param name="c"></param>
-    public CellCore(Vector2 pos, int a, int b, int c) {
+    public CellCore(Vector2 pos) {
         this.pos = pos;
-        this.a = a;
-        this.b = b;
-        this.c = c;
         this.neighbors = null;
         this.children = null;
         this.edges = null;
-        this.biome = null;
-        this.biomeGroup = null;
         id = totalCellCount;
         totalCellCount += 1;
         childrenBuffer = new List<Node>();
         neighborBuffer = new List<CellCore>();
         edgeBuffer = new List<Edge>();
-        biome = null;
-    }
-
-    /// <summary>
-    /// constructor used for the fortune line ( temporary cells )
-    /// </summary>
-    /// <param name="pos"></param>
-    public CellCore(Vector2 pos) {
-        this.pos = pos;
-    }
-
-    /// <summary>
-    /// sets the biome group of the cell
-    /// should only be called upon metadata generation, never at runtime
-    /// </summary>
-    /// <param name="_biomeGroup"></param>
-    public void setBiomeGroup(BiomeGroup _biomeGroup) {
-        this.biomeGroup = _biomeGroup;
-    }
-
-    /// <summary>
-    /// sets the biome of the cellcore
-    /// should only be called upon metadata generation, never at runtime
-    /// </summary>
-    /// <param name="_biome"></param>
-    public void setBiome(Biome _biome) {
-        this.biome = _biome;
     }
 
     // all of the following variables and methods are used only during the diagramm generation

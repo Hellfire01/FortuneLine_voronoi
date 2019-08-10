@@ -11,9 +11,6 @@ public class Node {
     public CellCore[] parents; // the 2 or 3 parents of the node
     [System.NonSerialized]
     public Edge[] edges; // the edges that start or end at this vertex
-    // a and b are used for the quadtree generation
-    public int a = -1;
-    public int b = -1;
     public int id; // valeure unique utilisée pour facilement identifier la classe
     public bool isOutOfBoundary;
     private static int totalNodeCount = 0;
@@ -29,16 +26,6 @@ public class Node {
         sisterBuffer = new List<Node>();
         parentBuffer = new List<CellCore>();
         edgeBuffer = new List<Edge>();
-    }
-
-    /// <summary>
-    /// sets the position in the map for the quadtree generation
-    /// </summary>
-    /// <param name="a"></param>
-    /// <param name="b"></param>
-    public void setValues(int a, int b) {
-        this.a = a;
-        this.b = b;
     }
 
     // all of the following variables and methods are used only during the diagramm generation

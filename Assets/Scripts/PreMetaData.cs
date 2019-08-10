@@ -9,7 +9,6 @@ using UnityEngine;
 public class PreMetaData {
     // obtained after the initial cell placing
     public List<CellCore> allCores;
-    public CellCore[][][] cores; // probablement pas utile étant donné que toutes les infos seront placées dans le quad tree en une seulle fois
     // obtained after the Fortune Line Voronoi
     public List<Node> allNodes;
     public List<Edge> allEdges;

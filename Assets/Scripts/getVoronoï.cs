@@ -142,7 +142,14 @@ public static class getVoronoï {
         return ret;
     }
 
-    public static PreMetaData getVoronoi(double[] xVal, double[] yVal, int mapSize) {
+    /// <summary>
+    /// interfaces with getVoronoi(PreMetaData, int)
+    /// </summary>
+    /// <param name="xVal"></param>
+    /// <param name="yVal"></param>
+    /// <param name="mapSize"></param>
+    /// <returns></returns>
+    public static PreMetaData getVoronoi(float[] xVal, float[] yVal, int mapSize) {
         PreMetaData ret = new PreMetaData();
         ret.allCores = new List<CellCore>();
         ret.allNodes = new List<Node>();
@@ -152,11 +159,29 @@ public static class getVoronoï {
         }
         int i = 0;
         while (i < xVal.Length) {
-            ret.allCores.Add(new CellCore(new Vector2((float)xVal[i], (float)yVal[i])));
+            ret.allCores.Add(new CellCore(new Vector2(xVal[i], yVal[i])));
             i += 1;
         }
         getVoronoi(ref ret, mapSize);
         return ret;
     }
 
+    /// <summary>
+    /// casts all of the doubles into floats in order to call the getVoronoi(float[], float[], int)
+    /// </summary>
+    /// <param name="xVal"></param>
+    /// <param name="yVal"></param>
+    /// <param name="mapSize"></param>
+    /// <returns></returns>
+    public static PreMetaData getVoronoi(double[] xVal, double[] yVal, int mapSize) {
+        float[] xValues = new float[xVal.Length];
+        for(int i = 0; i < xVal.Length; i++) {
+            xValues[i] = (float)xVal[i];
+        }
+        float[] yValues = new float[yVal.Length];
+        for (int i = 0; i < yVal.Length; i++) {
+            yValues[i] = (float)yVal[i];
+        }
+        return getVoronoi(xValues, yValues, mapSize);
+    }
 }

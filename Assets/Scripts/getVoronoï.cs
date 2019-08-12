@@ -7,7 +7,7 @@ using FortuneLine;
 
 public static class getVoronoï {
     /// <summary>
-    /// takes in the cellCore list and translates it intop the class that is used for the fortune Voronoi
+    /// takes in the cellCore list and translates it into the class that is used for the fortune Voronoi
     /// </summary>
     /// <param name="cells"></param>
     /// <returns></returns>
@@ -33,7 +33,7 @@ public static class getVoronoï {
         Node buffer = null;
         try {
             buffer = vertex_dictionnary[pos];
-        } catch (KeyNotFoundException e) {
+        } catch (KeyNotFoundException) {
             bool is_out_of_bounds = false;
             if (pos.x < 0 || pos.x > mapSize || pos.y < 0 || pos.y > mapSize) {
                 is_out_of_bounds = true;
@@ -105,10 +105,11 @@ public static class getVoronoï {
     }
 
     /// <summary>
-    /// interfaces the fortune line voronoi and the rest of the programm
+    /// regroups all of the APIs in order to execute the rest of the programm
     /// </summary>
     /// <param name="metaData"></param>
-    public static void getVoronoi(ref PreMetaData metaData, int mapSize) {
+    /// <param name="mapSize"></param>
+    private static void getVoronoi(ref PreMetaData metaData, int mapSize) {
         Site[] translated_sites = translate_cellCore_data(metaData.allCores);
         double[] xVal = new double[translated_sites.Length];
         double[] yVal = new double[translated_sites.Length];
@@ -121,4 +122,41 @@ public static class getVoronoï {
         extract_data_from_graph_edge_list(to_translate, ref metaData, mapSize);
         validate_all_buffers(ref metaData);
     }
+
+    /// <summary>
+    /// interfaces the fortune line voronoi and the rest of the programm
+    /// </summary>
+    /// <param name="cellPos"></param>
+    /// <param name="mapSize"></param>
+    /// <returns></returns>
+    public static PreMetaData getVoronoi(List<Vector2> cellPos, int mapSize) {
+        PreMetaData ret = new PreMetaData();
+        ret.allCores = new List<CellCore>();
+        ret.allNodes = new List<Node>();
+        ret.allEdges = new List<Edge>();
+        foreach(Vector2 position in cellPos) {
+            CellCore buffer = new CellCore(position);
+            ret.allCores.Add(buffer);
+        }
+        getVoronoi(ref ret, mapSize);
+        return ret;
+    }
+
+    public static PreMetaData getVoronoi(double[] xVal, double[] yVal, int mapSize) {
+        PreMetaData ret = new PreMetaData();
+        ret.allCores = new List<CellCore>();
+        ret.allNodes = new List<Node>();
+        ret.allEdges = new List<Edge>();
+        if (xVal.Length != yVal.Length) {
+            throw new Exception("Yhe x and y arrays cannot have different lengths");
+        }
+        int i = 0;
+        while (i < xVal.Length) {
+            ret.allCores.Add(new CellCore(new Vector2((float)xVal[i], (float)yVal[i])));
+            i += 1;
+        }
+        getVoronoi(ref ret, mapSize);
+        return ret;
+    }
+
 }

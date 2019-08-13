@@ -7,9 +7,7 @@ using UnityEngine;
 /// It is only used before the player gets to interact with the map
 /// </summary>
 public class VoronoiData {
-    // obtained after the initial cell placing
-    public List<CellCore> allCores;
-    // obtained after the Fortune Line Voronoi
-    public List<Node> allNodes;
-    public List<Edge> allEdges;
+    public List<CellCore> cores;
+    public List<Node> nodes;
+    public List<Edge> edges;
 }

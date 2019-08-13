@@ -39,7 +39,7 @@ public static class GetVoronoï {
                 is_out_of_bounds = true;
             }
             buffer = new Node(pos, is_out_of_bounds);
-            metaData.allNodes.Add(buffer);
+            metaData.nodes.Add(buffer);
             vertex_dictionnary.Add(pos, buffer);
         }
         return buffer;
@@ -71,7 +71,7 @@ public static class GetVoronoï {
         cell2.addEdgeToBuffer(edge);
         vertex1.addEdgeToBuffer(edge);
         vertex2.addEdgeToBuffer(edge);
-        metaData.allEdges.Add(edge);
+        metaData.edges.Add(edge);
     }
 
     /// <summary>
@@ -96,10 +96,10 @@ public static class GetVoronoï {
     /// </summary>
     /// <param name="metaData"></param>
     private static void validate_all_buffers(ref VoronoiData metaData) {
-        foreach (Node node in metaData.allNodes) {
+        foreach (Node node in metaData.nodes) {
             node.validateBuffers();
         }
-        foreach (CellCore cell in metaData.allCores) {
+        foreach (CellCore cell in metaData.cores) {
             cell.validateBuffers();
         }
     }
@@ -110,7 +110,7 @@ public static class GetVoronoï {
     /// <param name="metaData"></param>
     /// <param name="mapSize"></param>
     private static void compute_and_translate_voronoi(ref VoronoiData metaData, int mapSize) {
-        Site[] translated_sites = translate_cellCore_data(metaData.allCores);
+        Site[] translated_sites = translate_cellCore_data(metaData.cores);
         double[] xVal = new double[translated_sites.Length];
         double[] yVal = new double[translated_sites.Length];
         for (int i = 0; i < translated_sites.Length; i++) {
@@ -131,12 +131,12 @@ public static class GetVoronoï {
     /// <returns></returns>
     public static VoronoiData getVoronoi(List<Vector2> cellPos, int mapSize) {
         VoronoiData ret = new VoronoiData();
-        ret.allCores = new List<CellCore>();
-        ret.allNodes = new List<Node>();
-        ret.allEdges = new List<Edge>();
+        ret.cores = new List<CellCore>();
+        ret.nodes = new List<Node>();
+        ret.edges = new List<Edge>();
         foreach(Vector2 position in cellPos) {
             CellCore buffer = new CellCore(position);
-            ret.allCores.Add(buffer);
+            ret.cores.Add(buffer);
         }
         compute_and_translate_voronoi(ref ret, mapSize);
         return ret;
@@ -150,9 +150,9 @@ public static class GetVoronoï {
     /// <returns></returns>
     public static VoronoiData getVoronoi(List<CellCore> cells, int mapSize) {
         VoronoiData ret = new VoronoiData();
-        ret.allCores = new List<CellCore>(cells);
-        ret.allNodes = new List<Node>();
-        ret.allEdges = new List<Edge>();
+        ret.cores = new List<CellCore>(cells);
+        ret.nodes = new List<Node>();
+        ret.edges = new List<Edge>();
         compute_and_translate_voronoi(ref ret, mapSize);
         return ret;
     }
@@ -166,15 +166,15 @@ public static class GetVoronoï {
     /// <returns></returns>
     public static VoronoiData getVoronoi(float[] xVal, float[] yVal, int mapSize) {
         VoronoiData ret = new VoronoiData();
-        ret.allCores = new List<CellCore>();
-        ret.allNodes = new List<Node>();
-        ret.allEdges = new List<Edge>();
+        ret.cores = new List<CellCore>();
+        ret.nodes = new List<Node>();
+        ret.edges = new List<Edge>();
         if (xVal.Length != yVal.Length) {
             throw new Exception("Yhe x and y arrays cannot have different lengths");
         }
         int i = 0;
         while (i < xVal.Length) {
-            ret.allCores.Add(new CellCore(new Vector2(xVal[i], yVal[i])));
+            ret.cores.Add(new CellCore(new Vector2(xVal[i], yVal[i])));
             i += 1;
         }
         compute_and_translate_voronoi(ref ret, mapSize);

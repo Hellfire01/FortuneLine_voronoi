@@ -14,6 +14,7 @@ public class Demo : MonoBehaviour {
         double[] yVald = new double[count];
         float[] xValf = new float[count];
         float[] yValf = new float[count];
+        List<Vector2> cellPos = new List<Vector2>();
         List<CellCore> cells = new List<CellCore>();
         while (i < count) {
             double x = prng.Next(0, mapSize);
@@ -22,7 +23,13 @@ public class Demo : MonoBehaviour {
             yVald[i] = y;
             xValf[i] = (float)x;
             yValf[i] = (float)y;
-            cells.Add(new CellCore(new Vector2((float)x, (float)y)));
+            Vector2 buff = new Vector2((float)x, (float)y);
+            cellPos.Add(buff);
+            cells.Add(new CellCore(buff));
         }
+        VoronoiData vd1 = GetVoronoï.getVoronoi(xVald, yVald, mapSize);
+        VoronoiData vd2 = GetVoronoï.getVoronoi(xValf, yValf, mapSize);
+        VoronoiData vd3 = GetVoronoï.getVoronoi(cellPos, mapSize);
+        VoronoiData vd4 = GetVoronoï.getVoronoi(cells, mapSize);
     }
 }

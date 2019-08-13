@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System;
 using FortuneLine;
 
-public static class getVoronoï {
+public static class GetVoronoï {
     /// <summary>
     /// takes in the cellCore list and translates it into the class that is used for the fortune Voronoi
     /// </summary>
@@ -109,7 +109,7 @@ public static class getVoronoï {
     /// </summary>
     /// <param name="metaData"></param>
     /// <param name="mapSize"></param>
-    private static void getVoronoi(ref VoronoiData metaData, int mapSize) {
+    private static void compute_and_translate_voronoi(ref VoronoiData metaData, int mapSize) {
         Site[] translated_sites = translate_cellCore_data(metaData.allCores);
         double[] xVal = new double[translated_sites.Length];
         double[] yVal = new double[translated_sites.Length];
@@ -138,12 +138,27 @@ public static class getVoronoï {
             CellCore buffer = new CellCore(position);
             ret.allCores.Add(buffer);
         }
-        getVoronoi(ref ret, mapSize);
+        compute_and_translate_voronoi(ref ret, mapSize);
         return ret;
     }
 
     /// <summary>
-    /// interfaces with getVoronoi(PreMetaData, int)
+    /// interfaces the fortune line voronoi and the rest of the programm
+    /// </summary>
+    /// <param name="cells"></param>
+    /// <param name="mapSize"></param>
+    /// <returns></returns>
+    public static VoronoiData getVoronoi(List<CellCore> cells, int mapSize) {
+        VoronoiData ret = new VoronoiData();
+        ret.allCores = new List<CellCore>(cells);
+        ret.allNodes = new List<Node>();
+        ret.allEdges = new List<Edge>();
+        compute_and_translate_voronoi(ref ret, mapSize);
+        return ret;
+    }
+
+    /// <summary>
+    /// interfaces the fortune line voronoi and the rest of the programm
     /// </summary>
     /// <param name="xVal"></param>
     /// <param name="yVal"></param>
@@ -162,7 +177,7 @@ public static class getVoronoï {
             ret.allCores.Add(new CellCore(new Vector2(xVal[i], yVal[i])));
             i += 1;
         }
-        getVoronoi(ref ret, mapSize);
+        compute_and_translate_voronoi(ref ret, mapSize);
         return ret;
     }
 

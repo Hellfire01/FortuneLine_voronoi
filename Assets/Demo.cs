@@ -10,15 +10,19 @@ public class Demo : MonoBehaviour {
         int i = 0;
         int count = 8;
         int mapSize = 100;
-        double[] xVal = new double[count];
-        double[] yVal = new double[count];
+        double[] xVald = new double[count];
+        double[] yVald = new double[count];
+        float[] xValf = new float[count];
+        float[] yValf = new float[count];
         List<CellCore> cells = new List<CellCore>();
         while (i < count) {
-            float x = prng.Next(0, mapSize);
-            float y = prng.Next(0, mapSize);
-            xVal[i] = x;
-            yVal[i] = y;
-            cells.Add(new CellCore(new Vector2(x, y)));
+            double x = prng.Next(0, mapSize);
+            double y = prng.Next(0, mapSize);
+            xVald[i] = x;
+            yVald[i] = y;
+            xValf[i] = (float)x;
+            yValf[i] = (float)y;
+            cells.Add(new CellCore(new Vector2((float)x, (float)y)));
         }
     }
 }

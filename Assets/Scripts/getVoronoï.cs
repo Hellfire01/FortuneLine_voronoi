@@ -29,7 +29,7 @@ public static class getVoronoï {
     /// <param name="metaData"></param>
     /// <param name="mapSize"></param>
     /// <returns></returns>
-    private static Node get_or_assign_node_in_dictionnary(ref Dictionary<Vector2, Node> vertex_dictionnary, Vector2 pos, ref PreMetaData metaData, int mapSize) {
+    private static Node get_or_assign_node_in_dictionnary(ref Dictionary<Vector2, Node> vertex_dictionnary, Vector2 pos, ref VoronoiData metaData, int mapSize) {
         Node buffer = null;
         try {
             buffer = vertex_dictionnary[pos];
@@ -53,7 +53,7 @@ public static class getVoronoï {
     /// <param name="vertex1"></param>
     /// <param name="vertex2"></param>
     /// <param name="metaData"></param>
-    private static void compute_relations_vertex_and_cellcores(ref CellCore cell1, ref CellCore cell2, ref Node vertex1, ref Node vertex2, ref PreMetaData metaData) {
+    private static void compute_relations_vertex_and_cellcores(ref CellCore cell1, ref CellCore cell2, ref Node vertex1, ref Node vertex2, ref VoronoiData metaData) {
         cell1.addNeigborToBuffer(ref cell2);
         cell1.addChildToBuffer(ref vertex1);
         cell1.addChildToBuffer(ref vertex2);
@@ -80,7 +80,7 @@ public static class getVoronoï {
     /// <param name="to_translate"></param>
     /// <param name="metaData"></param>
     /// <param name="mapSize"></param>
-    private static void extract_data_from_graph_edge_list(List<GraphEdge> to_translate, ref PreMetaData metaData, int mapSize) {
+    private static void extract_data_from_graph_edge_list(List<GraphEdge> to_translate, ref VoronoiData metaData, int mapSize) {
         Dictionary<Vector2, Node> vertex_dictionnary = new Dictionary<Vector2, Node>();
         foreach (GraphEdge edge in to_translate) {
             Vector2 pos1 = new Vector2((float)edge.x1, (float)edge.y1);
@@ -95,7 +95,7 @@ public static class getVoronoï {
     /// validates all of the buffers of the vertices and cellcores
     /// </summary>
     /// <param name="metaData"></param>
-    private static void validate_all_buffers(ref PreMetaData metaData) {
+    private static void validate_all_buffers(ref VoronoiData metaData) {
         foreach (Node node in metaData.allNodes) {
             node.validateBuffers();
         }
@@ -109,7 +109,7 @@ public static class getVoronoï {
     /// </summary>
     /// <param name="metaData"></param>
     /// <param name="mapSize"></param>
-    private static void getVoronoi(ref PreMetaData metaData, int mapSize) {
+    private static void getVoronoi(ref VoronoiData metaData, int mapSize) {
         Site[] translated_sites = translate_cellCore_data(metaData.allCores);
         double[] xVal = new double[translated_sites.Length];
         double[] yVal = new double[translated_sites.Length];
@@ -129,8 +129,8 @@ public static class getVoronoï {
     /// <param name="cellPos"></param>
     /// <param name="mapSize"></param>
     /// <returns></returns>
-    public static PreMetaData getVoronoi(List<Vector2> cellPos, int mapSize) {
-        PreMetaData ret = new PreMetaData();
+    public static VoronoiData getVoronoi(List<Vector2> cellPos, int mapSize) {
+        VoronoiData ret = new VoronoiData();
         ret.allCores = new List<CellCore>();
         ret.allNodes = new List<Node>();
         ret.allEdges = new List<Edge>();
@@ -149,8 +149,8 @@ public static class getVoronoï {
     /// <param name="yVal"></param>
     /// <param name="mapSize"></param>
     /// <returns></returns>
-    public static PreMetaData getVoronoi(float[] xVal, float[] yVal, int mapSize) {
-        PreMetaData ret = new PreMetaData();
+    public static VoronoiData getVoronoi(float[] xVal, float[] yVal, int mapSize) {
+        VoronoiData ret = new VoronoiData();
         ret.allCores = new List<CellCore>();
         ret.allNodes = new List<Node>();
         ret.allEdges = new List<Edge>();
@@ -173,7 +173,7 @@ public static class getVoronoï {
     /// <param name="yVal"></param>
     /// <param name="mapSize"></param>
     /// <returns></returns>
-    public static PreMetaData getVoronoi(double[] xVal, double[] yVal, int mapSize) {
+    public static VoronoiData getVoronoi(double[] xVal, double[] yVal, int mapSize) {
         float[] xValues = new float[xVal.Length];
         for(int i = 0; i < xVal.Length; i++) {
             xValues[i] = (float)xVal[i];

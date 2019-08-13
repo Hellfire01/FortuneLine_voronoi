@@ -6,7 +6,7 @@ using UnityEngine;
 /// This class contains all of the necessary information to generate the Quad Tree
 /// It is only used before the player gets to interact with the map
 /// </summary>
-public class PreMetaData {
+public class VoronoiData {
     // obtained after the initial cell placing
     public List<CellCore> allCores;
     // obtained after the Fortune Line Voronoi
